@@ -23,6 +23,7 @@ import com.solab.iso8583.CustomField;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.IsoValue;
 import com.solab.iso8583.parse.FieldParseInfo;
+import com.solab.iso8583.values.FieldDescribe;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -31,7 +32,9 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 
 public class CompositeField implements CustomBinaryField<CompositeField> {
@@ -157,6 +160,13 @@ public class CompositeField implements CustomBinaryField<CompositeField> {
                         pos += 4;
                     }
                     vals.add(v);
+                    Class<FieldDescribe> values = fpi.getValues();
+                    if (Objects.nonNull(values)) {
+                        Arrays.stream(values.getEnumConstants())
+                              .map(FieldDescribe::cast)
+                              .filter(fe -> fe.getCode().equals(v.getValue())).findFirst()
+                              .ifPresent(v::setDescribe);
+                    }
                 }
             }
             final CompositeField f = new CompositeField();

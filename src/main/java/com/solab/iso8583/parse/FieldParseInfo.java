@@ -21,6 +21,7 @@ package com.solab.iso8583.parse;
 import com.solab.iso8583.CustomField;
 import com.solab.iso8583.IsoType;
 import com.solab.iso8583.IsoValue;
+import com.solab.iso8583.values.FieldDescribe;
 
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
@@ -37,7 +38,16 @@ public abstract class FieldParseInfo {
     protected boolean forceStringDecoding;
     protected boolean forceHexadecimalLength;
     private CustomField<?> decoder;
+    private Class<FieldDescribe> values;
     private boolean needUpdate;
+
+	public Class<FieldDescribe> getValues() {
+		return values;
+	}
+
+	public void setValues(Class<FieldDescribe> values) {
+		this.values = values;
+	}
 
 	/** Creates a new instance that parses a value of the specified type, with the specified length.
 	 * The length is only useful for ALPHA and NUMERIC types.
